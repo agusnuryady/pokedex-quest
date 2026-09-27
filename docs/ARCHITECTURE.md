@@ -19,8 +19,8 @@ The code is split into four layers. Dependencies only point downward: the domain
 flowchart TD
     subgraph Presentation["Presentation (src/app, src/presentation)"]
         Routes["Routes / screens<br/>Expo Router"]
-        VM["View-model hooks<br/>usePokedexVM, useBattleVM"]
-        UI["Reusable components<br/>TypeBadge, StatBar, HpBar"]
+        VM["View-model hooks<br/>useGlossaryVM, usePokemonDetailVM,<br/>useCollectionVM"]
+        UI["Reusable components<br/>PokemonCard, TypeBadge, StatBar,<br/>SearchField, StateViews"]
     end
     subgraph State["State (src/state)"]
         Store["gameStore<br/>Zustand + AsyncStorage"]
@@ -58,11 +58,15 @@ flowchart TD
 | Data | `src/data` | Fetching PokéAPI and mapping raw responses to domain models | Domain models only |
 | Domain | `src/domain` | Every game rule, as pure functions | Nothing |
 
-> Status: the domain, data and state layers are complete and tested. The presentation names in the diagram (view models and components) are the planned shape for phases 2 and 3; the tabs currently show placeholders.
+> Status: Glossary, the detail page and Collection are built. Play and Battle screens (and their `useBattleVM`, `HpBar`) are next; their game rules are already complete and tested.
 
 ### Presentation pattern
 
 Screens follow MVVM, the pattern React naturally supports. A route file (the View) renders and forwards user events. A view-model hook owns screen state, calls the repository through TanStack Query, and calls domain functions. The Model is the domain layer. This keeps screens thin and makes view models testable with React Native Testing Library.
+
+The repository reaches view models through a React context (`RepositoryProvider`), which is how tests inject the in-memory implementation. Query keys and fetchers are defined once in `presentation/queries/pokemonQueries.ts` and reused by every screen.
+
+Every list shares the same loading, error and empty components (`StateViews`), so all screens fail and recover the same way: errors explain what went wrong and offer "Try again", and empty states point to the next action.
 
 ## Key design decisions
 
@@ -144,7 +148,8 @@ src/
   presentation/
     components/         Reusable UI pieces
     hooks/              View-model hooks
-    providers/          Query client and app-wide providers
+    providers/          Query client and repository injection
+    queries/            Query keys and fetchers
   state/                gameStore (Zustand, persisted)
   data/
     api/                httpClient, PokéAPI DTO types
@@ -155,9 +160,10 @@ src/
     map/                terrain, movement, encounter
     battle/             typeChart, combatant, damage, battleEngine
     collection/         catch, seen, partner, level rules
+    pokedex/            search, filter and paging
     random.ts           Seeded Rng
     models.ts           Domain entities
-  shared/               config, theme tokens
+  shared/               config, theme tokens, formatting, colour helpers
   test-utils/           Shared test factories
 ```
 
@@ -167,8 +173,8 @@ src/
 |---|---|---|
 | Lint | ESLint with `eslint-config-expo` | Locally and in CI |
 | Types | TypeScript strict, `noUncheckedIndexedAccess` | Locally and in CI |
-| Unit tests | Jest (`jest-expo`) | Locally and in CI |
-| Coverage | Thresholds on `src/domain` (90%) and `src/data` (85%) | CI fails if coverage drops |
+| Unit and component tests | Jest (`jest-expo`) and React Native Testing Library | Locally and in CI |
+| Coverage | Thresholds on `src/domain` and view models (90%) and `src/data` (85%) | CI fails if coverage drops |
 | Build | `expo export --platform web` | CI, uploaded as an artifact |
 
 ## Delivery

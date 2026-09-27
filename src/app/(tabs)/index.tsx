@@ -1,5 +1,9 @@
-import { ComingSoon } from '@/presentation/components/ComingSoon';
+import { MessageState, Screen } from '@/presentation/components';
 
 export default function PlayScreen() {
-  return <ComingSoon title="Play" detail="Walk the tall grass to meet wild Pokémon. Built in phase 3." />;
+  return (
+    <Screen title="Play">
+      <MessageState title="The tall grass is coming" message="Choose a partner, walk the map, and meet wild Pokémon. This screen is built next." />
+    </Screen>
+  );
 }

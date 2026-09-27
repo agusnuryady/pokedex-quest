@@ -22,7 +22,16 @@ export const spacing = { xs: 4, sm: 8, md: 12, lg: 16, xl: 24, xxl: 32 } as cons
 /** Radius follows hierarchy: chips are pills, cards are soft, the game frame is sharp. */
 export const radius = { sharp: 2, card: 14, pill: 999 } as const;
 
-export const typeScale = { caption: 12, body: 15, title: 20, display: 32 } as const;
+export const typeScale = { caption: 12, body: 15, subtitle: 17, title: 22, display: 34 } as const;
+
+/**
+ * Bricolage Grotesque carries headings and numbers — slightly quirky, like hand-lettered
+ * field labels. Body copy uses the platform font for speed and legibility.
+ */
+export const fonts = {
+  display: 'BricolageGrotesque_700Bold',
+  displayMedium: 'BricolageGrotesque_500Medium',
+} as const;
 
 /** Widely used community type colours, so players recognise them instantly. */
 export const typeColors: Record<PokemonType, string> = {
@@ -42,5 +51,5 @@ export const tileColors: Record<TileKind, string> = {
   tree: '#2C5A34',
 };
 
-export const theme = { palette, spacing, radius, typeScale, typeColors, tileColors } as const;
+export const theme = { palette, spacing, radius, typeScale, fonts, typeColors, tileColors } as const;
 export type Theme = typeof theme;

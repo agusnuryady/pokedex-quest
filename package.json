@@ -3,10 +3,12 @@
   "version": "1.0.0",
   "main": "expo-router/entry",
   "dependencies": {
+    "@expo-google-fonts/bricolage-grotesque": "^0.4.1",
     "@react-native-async-storage/async-storage": "2.2.0",
     "@tanstack/react-query": "^5.104.0",
     "expo": "~57.0.25",
     "expo-constants": "~57.0.19",
+    "expo-font": "~57.0.4",
     "expo-image": "~57.0.5",
     "expo-linking": "~57.0.11",
     "expo-router": "~57.0.23",
@@ -56,7 +58,8 @@
       "src/presentation/**/*.{ts,tsx}",
       "!src/**/index.ts",
       "!src/**/*.d.ts",
-      "!src/data/fixtures/**"
+      "!src/data/fixtures/**",
+      "src/shared/**/*.ts"
     ],
     "transformIgnorePatterns": [
       "node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|zustand|@tanstack/.*)"
@@ -73,6 +76,12 @@
         "branches": 70,
         "functions": 85,
         "lines": 85
+      },
+      "./src/presentation/hooks/": {
+        "statements": 90,
+        "branches": 85,
+        "functions": 90,
+        "lines": 90
       }
     }
   }

@@ -16,8 +16,8 @@ Built with React Native and Expo as a take-home assessment for a Frontend / Mobi
 
 | Area | What it does | Status |
 |---|---|---|
-| Glossary | Every Pokémon with instant search, type filter, and a detail page with stats, abilities and description | In progress |
-| Collection | Pokémon you've caught and seen, and your battle partner | In progress |
+| Glossary | Every Pokémon with instant search by name or number, a type filter, paged scrolling, and a detail page with stats, abilities and description | Done |
+| Collection | Pokémon you've caught and seen, and your battle partner, which you can change from any caught Pokémon's page | Done |
 | Play | An infinite, procedurally generated map with lakes, forests, trails and tall grass. Move with a D-pad; wild Pokémon appear in tall grass | Game rules done, screen in progress |
 | Battle | One-on-one, turn-based: pick an attack or run. Type effectiveness and speed matter. Win to catch it | Game rules done, screen in progress |
 
@@ -72,7 +72,7 @@ EXPO_PUBLIC_USE_MOCK_API=true npm run web
 
 ## Testing
 
-96 unit tests across 14 suites cover the domain, data and state layers. Overall coverage is 96% of statements, and CI fails if the domain drops below 90% or the data layer below 85%.
+140 tests across 18 suites cover the domain, data, state and presentation layers, including component tests and view-model tests with React Native Testing Library. Overall coverage is 97% of statements. CI fails if coverage drops below 90% for the domain and view models, or below 85% for the data layer.
 
 | Area | Examples of what is tested |
 |---|---|
@@ -84,6 +84,9 @@ EXPO_PUBLIC_USE_MOCK_API=true npm run web
 | Battle | Turn order, speed ties, winning, losing, successful and failed escapes |
 | Collection | Starter pick, repeat catches, partner rules, level cap, no mutation |
 | Data | DTO mapping, unit conversion, flavor-text cleanup, timeouts, HTTP and network errors |
+| Search | Name and number matching (`#025`, `Mr. Mime`), type filter combined with search, paging |
+| Components | Type chips select and clear, cards report presses and caught state, stat bars never overflow, disabled buttons don't fire |
+| View models | Glossary paging, search and type filter, error then retry, detail page progress and partner switch, collection ordering and counts |
 
 ## Development process
 
@@ -95,7 +98,7 @@ EXPO_PUBLIC_USE_MOCK_API=true npm run web
 
 ## Tech stack
 
-Expo SDK 57, React Native 0.86, TypeScript (strict), Expo Router, TanStack Query, Zustand, AsyncStorage, Jest with `jest-expo`, ESLint, GitHub Actions, EAS Build, and Vercel.
+Expo SDK 57, React Native 0.86, TypeScript (strict), Expo Router, TanStack Query, Zustand, AsyncStorage, expo-image, Bricolage Grotesque (display type), Jest with `jest-expo` and React Native Testing Library, ESLint, GitHub Actions, EAS Build, and Vercel.
 
 ## Credits
 

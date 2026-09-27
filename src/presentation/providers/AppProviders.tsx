@@ -1,6 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useState, type ReactNode } from 'react';
-import { ApiError } from '@/data';
+import { ApiError, pokemonRepository, type PokemonRepository } from '@/data';
+import { RepositoryProvider } from './RepositoryProvider';
 
 /** Pokémon data never changes, so cache it for the whole session and only retry transient errors. */
 export function createQueryClient(): QueryClient {
@@ -16,7 +17,17 @@ export function createQueryClient(): QueryClient {
   });
 }
 
-export function AppProviders({ children }: { children: ReactNode }) {
-  const [client] = useState(createQueryClient);
-  return <QueryClientProvider client={client}>{children}</QueryClientProvider>;
+interface Props {
+  children: ReactNode;
+  repository?: PokemonRepository;
+  queryClient?: QueryClient;
+}
+
+export function AppProviders({ children, repository = pokemonRepository, queryClient }: Props) {
+  const [client] = useState(() => queryClient ?? createQueryClient());
+  return (
+    <QueryClientProvider client={client}>
+      <RepositoryProvider repository={repository}>{children}</RepositoryProvider>
+    </QueryClientProvider>
+  );
 }

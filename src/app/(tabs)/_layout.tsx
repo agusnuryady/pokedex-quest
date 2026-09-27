@@ -5,11 +5,12 @@ export default function TabsLayout() {
   return (
     <Tabs
       screenOptions={{
+        headerShown: false,
         tabBarActiveTintColor: palette.moss,
         tabBarInactiveTintColor: palette.inkSoft,
         tabBarStyle: { backgroundColor: palette.paper, borderTopColor: palette.fog },
-        headerStyle: { backgroundColor: palette.paper },
-        headerTintColor: palette.ink,
+        tabBarLabelStyle: { fontSize: 13, fontWeight: '600' },
+        tabBarIconStyle: { display: 'none' },
       }}
     >
       <Tabs.Screen name="index" options={{ title: 'Play' }} />
