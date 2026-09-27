@@ -174,7 +174,8 @@ src/
 | Lint | ESLint with `eslint-config-expo` | Locally and in CI |
 | Types | TypeScript strict, `noUncheckedIndexedAccess` | Locally and in CI |
 | Unit and component tests | Jest (`jest-expo`) and React Native Testing Library | Locally and in CI |
-| Coverage | Thresholds on `src/domain` and view models (90%) and `src/data` (85%) | CI fails if coverage drops |
+| Screen tests | Expo Router's `renderRouter`: the real routes and tab bar in a real router, driven by taps and typing | Locally and in CI |
+| Coverage | Thresholds on `src/domain` and view models (90%), and `src/data` and screens (85%) | CI fails if coverage drops |
 | Build | `expo export --platform web` | CI, uploaded as an artifact |
 
 ## Startup

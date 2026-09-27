@@ -84,7 +84,7 @@ EXPO_PUBLIC_USE_MOCK_API=true npm run web
 
 ## Testing
 
-176 tests across 24 suites cover the domain, data, state and presentation layers, including component tests and view-model tests with React Native Testing Library. Overall coverage is 98% of statements. CI fails if coverage drops below 90% for the domain and view models, or below 85% for the data layer.
+203 tests across 28 suites cover every layer, from pure game rules up to whole screens. Screen tests mount the real app (every route and the real tab bar) inside a real router, then tap and type the way a person would. Overall coverage is 98% of statements. CI fails if coverage drops below 90% for the domain and view models, or below 85% for the data layer and screens.
 
 | Area | Examples of what is tested |
 |---|---|
@@ -102,6 +102,7 @@ EXPO_PUBLIC_USE_MOCK_API=true npm run web
 | Game view models | Starter choice, movement and collision, the partner following, encounters in tall grass, a full battle won with a catch and level-up, running away, the result saved only once |
 | Game components | D-pad tap and hold-to-walk timing, keyboard controls on web only, HP bar colours, map layout, two-tap confirm for Start over |
 | Persistence | A saved game is restored from device storage; an in-progress battle is never saved |
+| Screens | Tab bar icons and switching; Glossary search, type filter, empty state and caught markers; detail page stats and partner switch; Collection empty state, partner card and Start over; starter pick and walking; stepping into tall grass opens a battle; winning, catching, running away, load errors; a typed-in `/battle` URL is sent back to the map; the crash screen |
 
 ## Development process
 
@@ -113,9 +114,15 @@ EXPO_PUBLIC_USE_MOCK_API=true npm run web
 - **Pull requests:** a template asks for test steps and a validation checklist.
 - **Tuning:** every number that affects how the game feels (walking speed, encounter rate, battle message speed) lives in `src/shared/tuning.ts`.
 
+## Troubleshooting
+
+**Errors mentioning files like `._index.tsx`.** macOS creates hidden `._name` files when a project lives on an exFAT or other non-Apple drive. The project already ignores them in git, Metro, ESLint and Jest. To remove existing ones, run `find . -name '._*' -type f -not -path './node_modules/*' -delete`. Keeping the project on the Mac's internal disk avoids them entirely.
+
+**Typecheck errors about route names.** Expo Router generates route types in `.expo/`. After adding or renaming screens, run `rm -rf .expo` and start the app again.
+
 ## Tech stack
 
-Expo SDK 57, React Native 0.86, TypeScript (strict), Expo Router, expo-splash-screen, TanStack Query, Zustand, AsyncStorage, expo-image, Bricolage Grotesque (display type), Jest with `jest-expo` and React Native Testing Library, ESLint, GitHub Actions, EAS Build, and Vercel.
+Expo SDK 57, React Native 0.86, TypeScript (strict), Expo Router, expo-splash-screen, @expo/vector-icons (Ionicons), TanStack Query, Zustand, AsyncStorage, expo-image, Bricolage Grotesque (display type), Jest with `jest-expo` and React Native Testing Library, ESLint, GitHub Actions, EAS Build, and Vercel.
 
 ## Credits
 

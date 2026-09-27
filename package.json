@@ -4,9 +4,11 @@
   "main": "expo-router/entry",
   "dependencies": {
     "@expo-google-fonts/bricolage-grotesque": "^0.4.1",
+    "@expo/vector-icons": "^15.0.2",
     "@react-native-async-storage/async-storage": "2.2.0",
     "@tanstack/react-query": "^5.104.0",
     "expo": "~57.0.25",
+    "expo-asset": "~57.0.18",
     "expo-constants": "~57.0.19",
     "expo-font": "~57.0.4",
     "expo-image": "~57.0.5",
@@ -60,10 +62,11 @@
       "!src/**/index.ts",
       "!src/**/*.d.ts",
       "!src/data/fixtures/**",
-      "src/shared/**/*.ts"
+      "src/shared/**/*.ts",
+      "src/app/**/*.tsx"
     ],
     "transformIgnorePatterns": [
-      "node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|zustand|@tanstack/.*)"
+      "node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|zustand|standard-navigation|@tanstack/.*)"
     ],
     "coverageThreshold": {
       "./src/domain/": {
@@ -83,8 +86,21 @@
         "branches": 85,
         "functions": 90,
         "lines": 90
+      },
+      "./src/app/": {
+        "statements": 85,
+        "branches": 70,
+        "functions": 85,
+        "lines": 85
       }
-    }
+    },
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/\\._"
+    ],
+    "modulePathIgnorePatterns": [
+      "/\\._"
+    ]
   },
   "engines": {
     "node": ">=20"

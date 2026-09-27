@@ -42,3 +42,6 @@ yarn-error.*
 
 # test coverage
 coverage/
+
+# macOS metadata files created on exFAT / non-Apple drives
+._*

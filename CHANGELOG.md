@@ -15,6 +15,7 @@ All notable changes to this project are listed here. The format follows [Keep a 
 - Collection: caught Pokémon in dex order, a partner card, and caught and seen counts.
 - Play: choose a starter partner, then explore the infinite map with a D-pad (tap or hold) or the keyboard on web. The partner follows one step behind, and a status bar shows the partner and the ground underfoot.
 - Battle: wild encounters in tall grass open a turn-based battle with animated HP bars, type-coloured move buttons, effectiveness messages, running away, and catching on a win. The partner gains a level per catch. Battles open only from a real encounter, not the URL, and results save before the victory animation plays (ADR 0006).
+- Tab bar icons: footsteps for Play, albums for Collection, book for Glossary; filled when active, outline otherwise.
 - Start over: erase progress from the bottom of Collection with a two-tap confirm that works on web and native.
 - Reusable components: AppText, Button, ConfirmButton, DPad, HpBar, MapGrid, PokemonCard, SearchField, StarterPicker, StatBar, TypeBadge, TypeFilterBar, Screen, and shared loading, error and empty states.
 - View models for every screen; repository injection through React context; shared query definitions.
@@ -22,10 +23,12 @@ All notable changes to this project are listed here. The format follows [Keep a 
 - Bricolage Grotesque display typeface.
 - A crash screen with a Reload button instead of a blank page.
 - `src/shared/tuning.ts` for walking speed, encounter rate and battle message speed.
-- Unit, component and view-model tests with Jest and React Native Testing Library, with coverage thresholds enforced in CI.
+- Unit, component, view-model and screen tests with Jest, React Native Testing Library and Expo Router's test renderer, with coverage thresholds enforced in CI.
 - Architecture document, six ADRs, deployment guide, pull request template, GitHub Actions CI, and EAS and Vercel configuration.
 
 ### Fixed
 
 - Saved progress now loads before the app appears. Previously a returning player could briefly see the starter picker, and choosing a starter there would overwrite their save.
 - The splash screen stays up until fonts and saved progress are ready, instead of flashing a blank screen.
+- Added the missing `expo-asset` package, which the font loader needs on Android and iOS. Without it the native app could fail at launch; the web build did not show the problem.
+- macOS `._name` metadata files (created on exFAT drives) are now ignored by git, Metro, ESLint and Jest, so they can no longer break the build or CI.

@@ -3,6 +3,7 @@ import {
   BricolageGrotesque_700Bold,
   useFonts,
 } from '@expo-google-fonts/bricolage-grotesque';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { Stack, type ErrorBoundaryProps } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
@@ -17,7 +18,11 @@ import { fonts, palette } from '@/shared/theme';
 void SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const [fontsLoaded, fontError] = useFonts({ BricolageGrotesque_500Medium, BricolageGrotesque_700Bold });
+  const [fontsLoaded, fontError] = useFonts({
+    BricolageGrotesque_500Medium,
+    BricolageGrotesque_700Bold,
+    ...Ionicons.font, // tab icons, loaded up front so they don't pop in
+  });
   const saveLoaded = useStoreHydrated();
   // Wait for saved progress before showing anything. If fonts fail, carry on with system fonts.
   const ready = saveLoaded && (fontsLoaded || !!fontError);

@@ -41,7 +41,8 @@
           "resizeMode": "contain",
           "backgroundColor": "#2F6B4F"
         }
-      ]
+      ],
+      "expo-asset"
     ],
     "scheme": "pokedexquest"
   }
