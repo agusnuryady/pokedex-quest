@@ -7,3 +7,7 @@ export * from './StatBar';
 export * from './StateViews';
 export * from './TypeBadge';
 export * from './TypeFilterBar';
+export * from './DPad';
+export * from './HpBar';
+export * from './MapGrid';
+export * from './StarterPicker';

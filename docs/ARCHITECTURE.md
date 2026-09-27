@@ -19,8 +19,8 @@ The code is split into four layers. Dependencies only point downward: the domain
 flowchart TD
     subgraph Presentation["Presentation (src/app, src/presentation)"]
         Routes["Routes / screens<br/>Expo Router"]
-        VM["View-model hooks<br/>useGlossaryVM, usePokemonDetailVM,<br/>useCollectionVM"]
-        UI["Reusable components<br/>PokemonCard, TypeBadge, StatBar,<br/>SearchField, StateViews"]
+        VM["View-model hooks<br/>useGlossaryVM, usePokemonDetailVM, useCollectionVM,<br/>useStarterVM, usePlayVM, useBattleVM"]
+        UI["Reusable components<br/>PokemonCard, TypeBadge, StatBar, SearchField,<br/>StateViews, MapGrid, DPad, HpBar"]
     end
     subgraph State["State (src/state)"]
         Store["gameStore<br/>Zustand + AsyncStorage"]
@@ -58,8 +58,6 @@ flowchart TD
 | Data | `src/data` | Fetching PokéAPI and mapping raw responses to domain models | Domain models only |
 | Domain | `src/domain` | Every game rule, as pure functions | Nothing |
 
-> Status: Glossary, the detail page and Collection are built. Play and Battle screens (and their `useBattleVM`, `HpBar`) are next; their game rules are already complete and tested.
-
 ### Presentation pattern
 
 Screens follow MVVM, the pattern React naturally supports. A route file (the View) renders and forwards user events. A view-model hook owns screen state, calls the repository through TanStack Query, and calls domain functions. The Model is the domain layer. This keeps screens thin and makes view models testable with React Native Testing Library.
@@ -76,11 +74,11 @@ Every list shares the same loading, error and empty components (`StateViews`), s
 
 ### All randomness is injected
 
-Every random decision takes an `Rng` argument instead of calling `Math.random()`. In the app the Rng is seeded; in tests it can be a fixed sequence. This is what makes encounters and battles fully unit-testable, including edge cases such as a failed escape or a speed tie.
+Every random decision takes an `Rng` argument instead of calling `Math.random()`. In the app, one generator is seeded when the session starts (`shared/sessionRng.ts`) and shared by all screens; in tests it can be a fixed value or sequence. This is what makes encounters and battles fully unit-testable, including edge cases such as a failed escape or a speed tie.
 
 ### Battle is a reducer
 
-`resolveTurn(state, action, rng)` returns a new `BattleState` and never mutates the old one. The UI only dispatches actions and animates `state.lastTurn`, the ordered list of events from the latest turn.
+`resolveTurn(state, action, rng)` returns a new `BattleState` and never mutates the old one. The UI only dispatches actions and animates `state.lastTurn`, the ordered list of events from the latest turn. `buildTurnFrames` turns those events into frames, each a message plus the HP to show with it, and the view model plays them back one at a time. The result is saved as soon as the engine decides it, before the animation, so it cannot be lost. See [ADR 0006](./adr/0006-battle-flow.md).
 
 ```mermaid
 stateDiagram-v2
@@ -113,7 +111,7 @@ The Glossary fetches the full species index once (about 1,300 names in one reque
 sequenceDiagram
     actor Player
     participant Play as Play screen
-    participant Domain as domain/map
+    participant Domain as domain
     participant Store as gameStore
     participant Repo as PokemonRepository
     participant Battle as Battle screen
@@ -125,20 +123,21 @@ sequenceDiagram
     Play->>Domain: rollEncounter(tile, steps, partnerLevel, rng)
     alt wild Pokémon appears
         Domain-->>Play: speciesId + level
-        Play->>Repo: getPokemon(speciesId)
-        Play->>Store: recordSeen(speciesId)
+        Play->>Store: startEncounter (also marks it seen)
         Play->>Battle: open battle
+        Battle->>Store: read encounter
+        Battle->>Repo: getPokemon(wild) and getPokemon(partner)
         Battle->>Domain: resolveTurn(state, action, rng) per turn
         alt won
             Battle->>Store: recordCatch + rewardPartner
         end
-        Battle->>Store: resetEncounterCounter
+        Battle->>Store: endEncounter (restarts the grace period)
     else nothing
         Domain-->>Play: null
     end
 ```
 
-Encounters happen only in tall grass, at 12% per step, with a four-step break after each battle. Legendaries are 20 times rarer than ordinary Pokémon, and starter lines and big rares are 5 times rarer. Wild levels stay within two of the partner's level.
+A battle can only open from a real encounter held in the store, never from the URL. Encounters happen only in tall grass, at 12% per step, with a four-step break after each battle. Legendaries are 20 times rarer than ordinary Pokémon, and starter lines and big rares are 5 times rarer. Wild levels stay within two of the partner's level.
 
 ## Folder structure
 
@@ -146,6 +145,7 @@ Encounters happen only in tall grass, at 12% per step, with a four-step break af
 src/
   app/                  Expo Router routes (screens only)
   presentation/
+    battle/             battle narration frames
     components/         Reusable UI pieces
     hooks/              View-model hooks
     providers/          Query client and repository injection

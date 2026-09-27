@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 import * as Collection from '@/domain/collection/collection';
+import type { WildEncounter } from '@/domain/map/encounter';
 import { findNearestWalkable, type Position } from '@/domain/map/terrain';
 
 /**
@@ -16,6 +17,13 @@ interface WorldState {
 
 interface GameState extends Collection.CollectionState {
   world: WorldState;
+  /**
+   * The wild Pokémon currently being battled. Kept in state (not the URL) so a battle
+   * can only start from a real encounter. Not persisted: reopening the app never resumes a battle.
+   */
+  encounter: WildEncounter | null;
+  startEncounter(encounter: WildEncounter): void;
+  endEncounter(): void;
   chooseStarter(speciesId: number, name: string): void;
   recordSeen(speciesId: number): void;
   recordCatch(entry: { speciesId: number; name: string; level: number }): void;
@@ -45,7 +53,10 @@ export const useGameStore = create<GameState>()(
     (set, get) => ({
       ...Collection.emptyCollection(),
       world: initialWorld(),
+      encounter: null,
 
+      startEncounter: (encounter) => set(() => ({ encounter, ...Collection.markSeen(collectionOf(get()), encounter.speciesId) })),
+      endEncounter: () => set((s) => ({ encounter: null, world: { ...s.world, stepsSinceLastEncounter: 0 } })),
       chooseStarter: (speciesId, name) =>
         set(Collection.chooseStarter(collectionOf(get()), speciesId, name, new Date())),
       recordSeen: (speciesId) => set(Collection.markSeen(collectionOf(get()), speciesId)),
@@ -60,7 +71,7 @@ export const useGameStore = create<GameState>()(
           world: { ...s.world, position, stepsSinceLastEncounter: s.world.stepsSinceLastEncounter + 1 },
         })),
       resetEncounterCounter: () => set((s) => ({ world: { ...s.world, stepsSinceLastEncounter: 0 } })),
-      resetGame: () => set({ ...Collection.emptyCollection(), world: initialWorld() }),
+      resetGame: () => set({ ...Collection.emptyCollection(), world: initialWorld(), encounter: null }),
     }),
     {
       name: 'pokedex-quest/game',

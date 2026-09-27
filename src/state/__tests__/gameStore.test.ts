@@ -30,4 +30,16 @@ describe('gameStore', () => {
     store().resetEncounterCounter();
     expect(store().world.stepsSinceLastEncounter).toBe(0);
   });
+
+  it('starts an encounter, marks it seen, and clears it with a fresh grace period', () => {
+    store().moveTo({ x: 1, y: 1 });
+    store().startEncounter({ speciesId: 19, level: 4 });
+    expect(store().encounter).toEqual({ speciesId: 19, level: 4 });
+    expect(store().seen[19]).toBe(true);
+    expect(store().caught[19]).toBeUndefined();
+
+    store().endEncounter();
+    expect(store().encounter).toBeNull();
+    expect(store().world.stepsSinceLastEncounter).toBe(0);
+  });
 });

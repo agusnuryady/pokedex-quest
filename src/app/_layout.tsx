@@ -27,6 +27,7 @@ export default function RootLayout() {
       >
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="pokemon/[id]" options={{ title: '' }} />
+        <Stack.Screen name="battle" options={{ headerShown: false, gestureEnabled: false, animation: 'fade' }} />
       </Stack>
     </AppProviders>
   );

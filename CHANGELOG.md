@@ -6,6 +6,10 @@ All notable changes to this project are listed here. The format follows [Keep a 
 
 ### Added
 
+- Play: choose a starter partner, then explore the infinite map with a D-pad (tap or hold) or the keyboard on web. The partner follows one step behind, and a status bar shows the partner and the ground underfoot.
+- Battle: wild encounters in tall grass open a turn-based battle with animated HP bars, type-coloured move buttons, effectiveness messages, running away, and catching on a win. The partner gains a level per catch.
+- Encounters are held in the store rather than the URL, and battle results save before the animation plays (ADR 0006).
+- Tests for the starter, play and battle view models, the D-pad hold timing, the keyboard controls, the HP bar and the map grid.
 - Glossary: every species with instant search by name or number, a type filter, paged scrolling, and caught markers.
 - Pokémon detail page: artwork, types, category, description, height, weight, abilities, base stats, and the player's progress, with a "Make partner" action.
 - Collection: caught Pokémon in dex order, a partner card, and caught and seen counts.

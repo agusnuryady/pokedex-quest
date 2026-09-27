@@ -18,8 +18,18 @@ Built with React Native and Expo as a take-home assessment for a Frontend / Mobi
 |---|---|---|
 | Glossary | Every Pokémon with instant search by name or number, a type filter, paged scrolling, and a detail page with stats, abilities and description | Done |
 | Collection | Pokémon you've caught and seen, and your battle partner, which you can change from any caught Pokémon's page | Done |
-| Play | An infinite, procedurally generated map with lakes, forests, trails and tall grass. Move with a D-pad; wild Pokémon appear in tall grass | Game rules done, screen in progress |
-| Battle | One-on-one, turn-based: pick an attack or run. Type effectiveness and speed matter. Win to catch it | Game rules done, screen in progress |
+| Play | Pick Bulbasaur, Charmander or Squirtle as your partner, then explore an infinite, procedurally generated map of lakes, forests, trails and tall grass. Walk with the on-screen D-pad (hold to keep walking) or the arrow keys and WASD on web. Your partner follows one step behind | Done |
+| Battle | Wild Pokémon appear in tall grass. Fight one-on-one, turn by turn: pick an attack or run. Type effectiveness and speed matter, and HP bars drop as each hit lands. Win to catch it, and your partner gains a level | Done |
+
+## How to play
+
+1. Open the Play tab and choose a partner.
+2. Walk with the D-pad, or the arrow keys or WASD on a keyboard.
+3. Step into the dark green tall grass. Wild Pokémon appear there, usually within 20 steps.
+4. Pick an attack each turn. A move that matches the wild Pokémon's weakness does double damage. Run if the fight looks bad.
+5. Win to catch it. Your partner gains a level, and the catch appears in Collection and is marked in the Glossary.
+
+Progress is saved on the device, so it survives closing the app or the browser.
 
 ## Architecture at a glance
 
@@ -72,7 +82,7 @@ EXPO_PUBLIC_USE_MOCK_API=true npm run web
 
 ## Testing
 
-140 tests across 18 suites cover the domain, data, state and presentation layers, including component tests and view-model tests with React Native Testing Library. Overall coverage is 97% of statements. CI fails if coverage drops below 90% for the domain and view models, or below 85% for the data layer.
+170 tests across 23 suites cover the domain, data, state and presentation layers, including component tests and view-model tests with React Native Testing Library. Overall coverage is 98% of statements. CI fails if coverage drops below 90% for the domain and view models, or below 85% for the data layer.
 
 | Area | Examples of what is tested |
 |---|---|
@@ -87,6 +97,8 @@ EXPO_PUBLIC_USE_MOCK_API=true npm run web
 | Search | Name and number matching (`#025`, `Mr. Mime`), type filter combined with search, paging |
 | Components | Type chips select and clear, cards report presses and caught state, stat bars never overflow, disabled buttons don't fire |
 | View models | Glossary paging, search and type filter, error then retry, detail page progress and partner switch, collection ordering and counts |
+| Game view models | Starter choice, movement and collision, the partner following, encounters in tall grass, a full battle won with a catch and level-up, running away, the result saved only once |
+| Game components | D-pad tap and hold-to-walk timing, keyboard controls on web only, HP bar colours, map layout |
 
 ## Development process
 

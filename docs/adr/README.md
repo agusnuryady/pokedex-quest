@@ -9,3 +9,4 @@ Each record captures one decision: the context, what was chosen, and the trade-o
 | [0003](./0003-procedural-infinite-map.md) | Infinite map computed from seeded noise, rendered as a View grid | Accepted |
 | [0004](./0004-repository-with-offline-mock.md) | Repository interface with PokéAPI and offline implementations | Accepted |
 | [0005](./0005-state-management.md) | TanStack Query for server data, Zustand for game state | Accepted |
+| [0006](./0006-battle-flow.md) | Encounters live in the store, and battle results save immediately | Accepted |
