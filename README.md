@@ -8,9 +8,11 @@ Built with React Native and Expo as a take-home assessment for a Frontend / Mobi
 
 | Platform | Link | Notes |
 |---|---|---|
-| Web | _Coming on day 3_ | Opens in any browser, nothing to install |
-| Android | _Coming on day 3_ | Download the APK and allow installs from your browser |
+| Web | **[Open Pokédex Quest](https://YOUR-VERCEL-URL)** | Any browser, nothing to install. Keyboard: arrow keys or WASD |
+| Android | **[Install the APK](https://YOUR-EAS-BUILD-URL)** | Android will ask you to allow the install and may show a Play Protect warning: choose "Install anyway" |
 | iOS | Use the web link | App Store and TestFlight are out of scope |
+
+How these are built and published is in [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
 
 ## Features
 
@@ -29,7 +31,7 @@ Built with React Native and Expo as a take-home assessment for a Frontend / Mobi
 4. Pick an attack each turn. A move that matches the wild Pokémon's weakness does double damage. Run if the fight looks bad.
 5. Win to catch it. Your partner gains a level, and the catch appears in Collection and is marked in the Glossary.
 
-Progress is saved on the device, so it survives closing the app or the browser.
+Progress is saved on the device, so it survives closing the app or the browser. To reset, scroll to the bottom of Collection and tap **Start over** twice.
 
 ## Architecture at a glance
 
@@ -82,7 +84,7 @@ EXPO_PUBLIC_USE_MOCK_API=true npm run web
 
 ## Testing
 
-170 tests across 23 suites cover the domain, data, state and presentation layers, including component tests and view-model tests with React Native Testing Library. Overall coverage is 98% of statements. CI fails if coverage drops below 90% for the domain and view models, or below 85% for the data layer.
+176 tests across 24 suites cover the domain, data, state and presentation layers, including component tests and view-model tests with React Native Testing Library. Overall coverage is 98% of statements. CI fails if coverage drops below 90% for the domain and view models, or below 85% for the data layer.
 
 | Area | Examples of what is tested |
 |---|---|
@@ -98,7 +100,8 @@ EXPO_PUBLIC_USE_MOCK_API=true npm run web
 | Components | Type chips select and clear, cards report presses and caught state, stat bars never overflow, disabled buttons don't fire |
 | View models | Glossary paging, search and type filter, error then retry, detail page progress and partner switch, collection ordering and counts |
 | Game view models | Starter choice, movement and collision, the partner following, encounters in tall grass, a full battle won with a catch and level-up, running away, the result saved only once |
-| Game components | D-pad tap and hold-to-walk timing, keyboard controls on web only, HP bar colours, map layout |
+| Game components | D-pad tap and hold-to-walk timing, keyboard controls on web only, HP bar colours, map layout, two-tap confirm for Start over |
+| Persistence | A saved game is restored from device storage; an in-progress battle is never saved |
 
 ## Development process
 
@@ -107,10 +110,12 @@ EXPO_PUBLIC_USE_MOCK_API=true npm run web
 - **CI:** GitHub Actions runs lint, typecheck, tests with coverage, and a web build on every push and pull request.
 - **Decisions:** recorded as ADRs in `docs/adr`.
 - **Changes:** listed in [CHANGELOG.md](CHANGELOG.md).
+- **Pull requests:** a template asks for test steps and a validation checklist.
+- **Tuning:** every number that affects how the game feels (walking speed, encounter rate, battle message speed) lives in `src/shared/tuning.ts`.
 
 ## Tech stack
 
-Expo SDK 57, React Native 0.86, TypeScript (strict), Expo Router, TanStack Query, Zustand, AsyncStorage, expo-image, Bricolage Grotesque (display type), Jest with `jest-expo` and React Native Testing Library, ESLint, GitHub Actions, EAS Build, and Vercel.
+Expo SDK 57, React Native 0.86, TypeScript (strict), Expo Router, expo-splash-screen, TanStack Query, Zustand, AsyncStorage, expo-image, Bricolage Grotesque (display type), Jest with `jest-expo` and React Native Testing Library, ESLint, GitHub Actions, EAS Build, and Vercel.
 
 ## Credits
 

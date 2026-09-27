@@ -11,3 +11,4 @@ export * from './DPad';
 export * from './HpBar';
 export * from './MapGrid';
 export * from './StarterPicker';
+export * from './ConfirmButton';

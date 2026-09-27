@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useSyncExternalStore } from 'react';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 import * as Collection from '@/domain/collection/collection';
@@ -87,3 +88,16 @@ export const selectPartner = (s: GameState) => Collection.getPartner(collectionO
 export const selectCaughtCount = (s: GameState) => Collection.caughtCount(collectionOf(s));
 export const selectSeenCount = (s: GameState) => Collection.seenCount(collectionOf(s));
 export const selectHasStarter = (s: GameState) => s.partnerId !== null;
+
+/**
+ * True once saved progress has loaded from device storage. Storage is asynchronous, so
+ * until then the store holds a fresh game; rendering it would briefly show a returning
+ * player the starter picker, and tapping a starter there would overwrite their save.
+ */
+export function useStoreHydrated(): boolean {
+  return useSyncExternalStore(
+    (onChange) => useGameStore.persist.onFinishHydration(onChange),
+    () => useGameStore.persist.hasHydrated(),
+    () => useGameStore.persist.hasHydrated(),
+  );
+}

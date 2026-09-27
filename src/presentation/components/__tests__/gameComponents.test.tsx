@@ -1,6 +1,7 @@
 import { act, fireEvent, render, screen } from '@testing-library/react-native';
 import { getViewport } from '@/domain/map/terrain';
 import { palette } from '@/shared/theme';
+import { CONFIRM_WINDOW_MS, ConfirmButton } from '../ConfirmButton';
 import { DPad, HOLD_REPEAT_MS } from '../DPad';
 import { HpBar, hpColor } from '../HpBar';
 import { MapGrid } from '../MapGrid';
@@ -82,5 +83,29 @@ describe('StarterPicker', () => {
     await render(<StarterPicker starters={starters} onChoose={onChoose} />);
     await fireEvent.press(screen.getByRole('button', { name: 'Choose Charmander' }));
     expect(onChoose).toHaveBeenCalledWith(4, 'charmander');
+  });
+});
+
+describe('ConfirmButton', () => {
+  beforeEach(() => jest.useFakeTimers());
+  afterEach(() => jest.useRealTimers());
+
+  it('asks for a second tap before acting', async () => {
+    const onConfirm = jest.fn();
+    await render(<ConfirmButton label="Start over" confirmLabel="Tap again to erase" onConfirm={onConfirm} />);
+    await fireEvent.press(screen.getByRole('button', { name: 'Start over' }));
+    expect(onConfirm).not.toHaveBeenCalled();
+    await fireEvent.press(screen.getByRole('button', { name: 'Tap again to erase' }));
+    expect(onConfirm).toHaveBeenCalledTimes(1);
+    expect(screen.getByRole('button', { name: 'Start over' })).toBeOnTheScreen();
+  });
+
+  it('disarms itself if the second tap never comes', async () => {
+    const onConfirm = jest.fn();
+    await render(<ConfirmButton label="Start over" confirmLabel="Tap again to erase" onConfirm={onConfirm} />);
+    await fireEvent.press(screen.getByRole('button', { name: 'Start over' }));
+    await act(async () => jest.advanceTimersByTime(CONFIRM_WINDOW_MS + 10));
+    await fireEvent.press(screen.getByRole('button', { name: 'Start over' }));
+    expect(onConfirm).not.toHaveBeenCalled();
   });
 });

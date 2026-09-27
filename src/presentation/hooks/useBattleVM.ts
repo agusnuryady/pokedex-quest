@@ -7,6 +7,7 @@ import type { Rng } from '@/domain/random';
 import { selectPartner, useGameStore } from '@/state/gameStore';
 import { formatName } from '@/shared/format';
 import { sessionRng } from '@/shared/sessionRng';
+import { tuning } from '@/shared/tuning';
 import { buildTurnFrames, type BattleFrame } from '../battle/battleFrames';
 import { useRepository } from '../providers/RepositoryProvider';
 import { pokemonQueries } from '../queries/pokemonQueries';
@@ -19,7 +20,7 @@ interface Options {
   frameMs?: number;
 }
 
-export const DEFAULT_FRAME_MS = 900;
+export const DEFAULT_FRAME_MS = tuning.battleMessageMs;
 
 /** Save the result the moment it is known, so closing the app mid-animation can't lose a catch. */
 function recordOutcome(state: BattleState): string | null {

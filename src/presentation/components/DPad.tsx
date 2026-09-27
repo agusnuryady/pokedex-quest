@@ -2,9 +2,10 @@ import { useEffect, useRef } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import type { Direction } from '@/domain/map/movement';
 import { palette, radius } from '@/shared/theme';
+import { tuning } from '@/shared/tuning';
 import { AppText } from './AppText';
 
-export const HOLD_REPEAT_MS = 170;
+export const HOLD_REPEAT_MS = tuning.walkRepeatMs;
 
 interface Props {
   onStep: (direction: Direction) => void;

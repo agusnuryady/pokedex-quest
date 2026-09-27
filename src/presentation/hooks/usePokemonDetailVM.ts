@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { useCallback, useMemo } from 'react';
-import { DEFAULT_ENCOUNTER_CONFIG } from '@/domain/map/encounter';
+import { gameEncounterConfig } from '@/shared/tuning';
 import type { StatName } from '@/domain/models';
 import { useGameStore } from '@/state/gameStore';
 import { STAT_LABELS } from '@/shared/format';
@@ -48,6 +48,6 @@ export function usePokemonDetailVM(id: number) {
     canMakePartner: caughtEntry !== undefined && partnerId !== id,
     makePartner,
     /** Only the first region's Pokémon appear in Play. */
-    appearsInWild: id <= DEFAULT_ENCOUNTER_CONFIG.poolMaxId,
+    appearsInWild: id <= gameEncounterConfig.poolMaxId,
   };
 }

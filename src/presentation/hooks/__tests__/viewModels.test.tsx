@@ -133,4 +133,13 @@ describe('useCollectionVM', () => {
     expect(result.current.entries.find((e) => e.isPartner)?.speciesId).toBe(7);
     expect(result.current).toMatchObject({ caughtCount: 3, seenCount: 4 });
   });
+
+  it('starts over, erasing all progress', async () => {
+    useGameStore.getState().chooseStarter(1, 'bulbasaur');
+    const { result } = await renderHookWithProviders(() => useCollectionVM());
+    expect(result.current.isEmpty).toBe(false);
+    await act(async () => result.current.startOver());
+    expect(result.current.isEmpty).toBe(true);
+    expect(useGameStore.getState().partnerId).toBeNull();
+  });
 });

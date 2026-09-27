@@ -8,6 +8,7 @@ export function useCollectionVM() {
   const partner = useGameStore(selectPartner);
   const caughtCount = useGameStore(selectCaughtCount);
   const seenCount = useGameStore(selectSeenCount);
+  const startOver = useGameStore((s) => s.resetGame);
 
   const entries = useMemo(
     () =>
@@ -28,5 +29,7 @@ export function useCollectionVM() {
     caughtCount,
     seenCount,
     isEmpty: entries.length === 0,
+    /** Erase all progress and return to the starter choice. */
+    startOver,
   };
 }

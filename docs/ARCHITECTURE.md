@@ -177,6 +177,10 @@ src/
 | Coverage | Thresholds on `src/domain` and view models (90%) and `src/data` (85%) | CI fails if coverage drops |
 | Build | `expo export --platform web` | CI, uploaded as an artifact |
 
+## Startup
+
+Saved progress lives in AsyncStorage (localStorage on web), which loads asynchronously. The root layout keeps the splash screen visible until both the fonts and the saved game have loaded (`useStoreHydrated`). Without this gate, a returning player would briefly be treated as new, and could overwrite their save by choosing a starter.
+
 ## Delivery
 
 | Target | How | For whom |
@@ -184,3 +188,5 @@ src/
 | Web | Vercel, built from `main` | The fastest way for a reviewer to try it |
 | Android | EAS Build `preview` profile, an installable APK link | Reviewers on Android |
 | iOS | Expo Go, or the web version | TestFlight needs a paid Apple account, so it is out of scope |
+
+Step-by-step instructions are in [DEPLOYMENT.md](./DEPLOYMENT.md).

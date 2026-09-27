@@ -1,10 +1,11 @@
 import { useCallback, useMemo, useState } from 'react';
-import { DEFAULT_ENCOUNTER_CONFIG, rollEncounter, type WildEncounter } from '@/domain/map/encounter';
+import { rollEncounter, type WildEncounter } from '@/domain/map/encounter';
 import { move, type Direction } from '@/domain/map/movement';
 import { getViewport, tileAt, type Position, type TileKind } from '@/domain/map/terrain';
 import type { Rng } from '@/domain/random';
 import { selectPartner, useGameStore } from '@/state/gameStore';
 import { sessionRng } from '@/shared/sessionRng';
+import { gameEncounterConfig } from '@/shared/tuning';
 
 export const TILE_LABELS: Record<TileKind, string> = {
   grass: 'Short grass',
@@ -56,7 +57,7 @@ export function usePlayVM({ cols, rows, onEncounter, rng }: Options) {
       const encounter = rollEncounter(
         { tile: result.tile, stepsSinceLastEncounter: useGameStore.getState().world.stepsSinceLastEncounter, partnerLevel },
         random,
-        DEFAULT_ENCOUNTER_CONFIG,
+        gameEncounterConfig,
       );
       if (encounter) {
         state.startEncounter(encounter);

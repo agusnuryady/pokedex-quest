@@ -11,7 +11,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
+        "backgroundColor": "#2F6B4F",
         "foregroundImage": "./assets/android-icon-foreground.png",
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"
@@ -22,12 +22,26 @@
     "web": {
       "favicon": "./assets/favicon.png",
       "bundler": "metro",
-      "output": "single"
+      "output": "single",
+      "name": "Pokédex Quest",
+      "shortName": "Pokédex Quest",
+      "description": "A Pokédex you can play: browse every Pokémon, explore an endless map, and catch them in battle.",
+      "themeColor": "#2F6B4F",
+      "backgroundColor": "#F7F8F4"
     },
     "plugins": [
       "expo-router",
       "expo-image",
-      "expo-font"
+      "expo-font",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/splash-icon.png",
+          "imageWidth": 180,
+          "resizeMode": "contain",
+          "backgroundColor": "#2F6B4F"
+        }
+      ]
     ],
     "scheme": "pokedexquest"
   }
